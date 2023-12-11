@@ -62,6 +62,3 @@ def create_app():
             return jsonify(result=predicted_label)
 
     return app
-
-
-# Path: api/run.py
