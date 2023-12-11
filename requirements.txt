@@ -1,0 +1,9 @@
+torch
+flask
+numpy
+opencv-python
+seaborn
+pathlib
+scikit-learn
+torchvision
+gunicorn
