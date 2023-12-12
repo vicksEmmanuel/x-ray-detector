@@ -9,20 +9,19 @@ import io
 
 
  # Load your model
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+# DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 NUM_CLASSES = 3
 model = models.densenet121(pretrained=False)
 num_ftrs = model.classifier.in_features
 model.classifier = nn.Linear(num_ftrs, NUM_CLASSES)
 model.load_state_dict(torch.load("model.pth"))
-model.to(DEVICE)
+print("Model loaded")
+# model.to(DEVICE)
 model.eval()
 
 
 
 def create_app():
-   
-
     app = Flask(__name__)
 
     @app.route('/')
