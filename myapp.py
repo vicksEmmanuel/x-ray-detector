@@ -1,3 +1,4 @@
+import torch.nn.functional as F
 from flask import Flask, request, jsonify
 import torch
 import torchvision.transforms as transforms
@@ -49,18 +50,33 @@ def create_app():
             input_batch = input_tensor.unsqueeze(0)
 
             print("About to run inference")
+
             # Run inference
             with torch.no_grad():
-                output = model(input_batch)  # Unsqueeze to add a batch dimension (batch size of 1)
-                _, predicted_class = torch.max(output, 1)
+                output = model(input_batch)
+                probabilities = F.softmax(output, dim=1)
+                top_prob, top_class = probabilities.topk(1, dim=1)
 
-            print(output)
-            print(predicted_class)
-            # Return the response as JSON
-
+            # Get the class label and probability
             class_labels = ["covid", "normal", "pneumonia"]
-            predicted_label = class_labels[predicted_class.item()]
+            predicted_label = class_labels[top_class.item()]
+            predicted_prob = top_prob.item()
 
-            return jsonify(result=predicted_label)
+            # Define a confidence threshold
+            confidence_threshold = 0.7
+
+            # Check if the image is worth classifying
+            if predicted_prob < confidence_threshold:
+                print("Image not suitable for classification or too ambiguous.")
+                return jsonify(result={
+                    "class": "unknown",
+                    "confidence": 0
+                })
+            else:
+                print(f"Predicted class: {predicted_label} with confidence {predicted_prob}")
+                return jsonify(result={
+                    "class": predicted_label,
+                    "confidence": predicted_prob
+                })
 
     return app

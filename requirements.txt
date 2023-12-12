@@ -7,3 +7,5 @@ pathlib
 scikit-learn
 torchvision
 gunicorn
+Jinja2
+MarkupSafe
