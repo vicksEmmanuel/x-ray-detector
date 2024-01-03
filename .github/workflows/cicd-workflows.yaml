@@ -15,9 +15,9 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build docker image
-        run: docker build -t vicksemmanuel/x-ray-detection .
+        run: docker build -t vicksemmanuel/x_ray_detection .
       - name: Publish image to docker hub
-        run: docker push vicksemmanuel/x-ray-detection:latest
+        run: docker push vicksemmanuel/x_ray_detection:latest
 
   deploy:
     needs: build
@@ -26,10 +26,10 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Pull image from docker hub
-        run: docker pull vicksemmanuel/x-ray-detection:latest
+        run: docker pull vicksemmanuel/x_ray_detection:latest
       - name: Clean up docker
         run: docker system prune -f
       - name: Delete old container
-        run: docker rm -f x-ray-detection-container
+        run: docker rm -f x_ray_detection-container
       - name: Run docker container
-        run: docker run -d -p 80:8080 --name x-ray-detection-container vicksemmanuel/x-ray-detection
+        run: docker run -d -p 80:8080 --name x_ray_detection-container vicksemmanuel/x_ray_detection
