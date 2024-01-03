@@ -23,13 +23,13 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-      - name: Login to docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Pull image from docker hub
-        run: docker pull vicksemmanuel/x_ray_detection:latest
       - name: Clean up docker
         run: docker system prune -f
       - name: Delete old container
         run: docker rm -f x_ray_detection-container
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Pull image from docker hub
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/x_ray_detection:latest
       - name: Run docker container
         run: docker run -d -p 80:8080 --name x_ray_detection-container vicksemmanuel/x_ray_detection
