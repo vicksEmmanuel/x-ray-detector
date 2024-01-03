@@ -25,10 +25,10 @@ jobs:
     steps:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Clean up docker
-        run: docker system prune -f
       - name: Pull image from docker hub
         run: docker pull vicksemmanuel/x-ray-detection:latest
+      - name: Clean up docker
+        run: docker system prune -f
       - name: Delete old container
         run: docker rm -f x-ray-detection-container
       - name: Run docker container
