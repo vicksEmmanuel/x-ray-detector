@@ -62,7 +62,7 @@ def create_app():
             predicted_label = class_labels[top_class.item()]
             predicted_prob = top_prob.item()
 
-            # Define a confidence threshold
+            # Define a confidence threshold 0.7
             confidence_threshold = 0.7
 
             # Check if the image is worth classifying
